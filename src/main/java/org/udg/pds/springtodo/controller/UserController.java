@@ -85,7 +85,6 @@ public class UserController extends BaseController {
 
   @GetMapping(path="/check")
   public String checkLoggedIn(HttpSession session) {
-
     getLoggedUser(session);
 
     return BaseController.OK_MESSAGE;

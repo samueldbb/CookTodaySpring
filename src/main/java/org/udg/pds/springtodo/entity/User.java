@@ -26,6 +26,7 @@ public class User extends BaseEntity implements Serializable {
     this.email = email;
     this.password = password;
     this.tasks = new ArrayList<>();
+    this.receptes = new ArrayList<>();
   }
 
 
@@ -40,6 +41,13 @@ public class User extends BaseEntity implements Serializable {
 
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
   private Collection<Task> tasks;
+
+  @OneToMany
+  private Collection<Recepta> receptes;
+
+  public Collection<Recepta> getReceptes() {
+      return receptes;
+  }
 
   @JsonView(Views.Private.class)
   public Long getId() {
@@ -74,4 +82,7 @@ public class User extends BaseEntity implements Serializable {
     tasks.add(task);
   }
 
+  public void addRecepta(Recepta recepta) {
+      receptes.add(recepta);
+  }
 }
