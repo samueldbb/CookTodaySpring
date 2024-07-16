@@ -1,5 +1,6 @@
 package org.udg.pds.springtodo.entity;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
@@ -45,10 +46,12 @@ public class Recepta implements Serializable {
         this.id = id;
     }
 
+    @JsonView(Views.Public.class)
     public String getNom() {
         return nom;
     }
 
+    @JsonView(Views.Public.class)
     public String getDescripcio() {
         return descripcio;
     }

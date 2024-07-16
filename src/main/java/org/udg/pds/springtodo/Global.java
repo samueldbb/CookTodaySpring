@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
+import org.udg.pds.springtodo.entity.Categoria;
 import org.udg.pds.springtodo.entity.IdObject;
 import org.udg.pds.springtodo.entity.Tag;
 import org.udg.pds.springtodo.entity.User;
@@ -97,12 +98,11 @@ public class Global {
             logger.info("Starting populating database ...");
 
             User user = userService.register("usuari", "usuari@hotmail.com", "123456");
-            IdObject taskId = taskService.addTask("Una tasca", user.getId(), AppDateFormatter.format(ZonedDateTime.now()), AppDateFormatter.format(ZonedDateTime.now()));
-            Tag tag = tagService.addTag("ATag", "Just a tag");
-            taskService.addTagsToTask(user.getId(), taskId.getId(), new ArrayList<Long>() {{
-                add(tag.getId());
-            }});
             userService.register("user", "user@hotmail.com", "0000");
+            User user1 = userService.register("Sam", "sam@hotmail.com", "123456");
+            User user2 = userService.register("Arnau", "arnau@hotmail.com", "123456");
+
+
         }
 
     }

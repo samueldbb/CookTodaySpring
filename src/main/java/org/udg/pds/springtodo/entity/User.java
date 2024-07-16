@@ -45,6 +45,7 @@ public class User extends BaseEntity implements Serializable {
   @OneToMany
   private Collection<Recepta> receptes;
 
+  @JsonView(Views.Complete.class)
   public Collection<Recepta> getReceptes() {
       return receptes;
   }

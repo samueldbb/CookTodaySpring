@@ -7,11 +7,17 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.udg.pds.springtodo.configuration.exceptions.ControllerException;
+import org.udg.pds.springtodo.entity.IdObject;
+import org.udg.pds.springtodo.entity.Recepta;
 import org.udg.pds.springtodo.entity.User;
 import org.udg.pds.springtodo.entity.Views;
+import org.udg.pds.springtodo.repository.ReceptaRepository;
+import org.udg.pds.springtodo.service.ReceptaService;
 import org.udg.pds.springtodo.service.UserService;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 // This class is used to process all the authentication related URLs
 @RequestMapping(path="/users")
@@ -20,6 +26,12 @@ public class UserController extends BaseController {
 
   @Autowired
   UserService userService;
+  @Autowired
+  ReceptaService receptaService;
+
+  @Autowired
+  ReceptaRepository receptaRepository;
+
 
   @PostMapping(path="/login")
   @JsonView(Views.Private.class)
@@ -90,7 +102,36 @@ public class UserController extends BaseController {
     return BaseController.OK_MESSAGE;
   }
 
-  private static class LoginUser {
+  @PostMapping(path= "/me/addRecepta")
+  public IdObject addRecepta(HttpSession session, @Valid @RequestBody ReceptaController.R_recepta recepta) {
+      Long userId = getLoggedUser(session);
+
+      return receptaService.addRecepta(recepta.nom, userId, recepta.descripcio);
+  }
+
+  @GetMapping(path= "/me/receptesPujades")
+  @JsonView(Views.Private.class)
+  public Collection<Recepta> listAllMyReceptes(HttpSession session,
+                                             @RequestParam(value = "from", required = false) Date from) {
+      Long userId = getLoggedUser(session);
+      return receptaService.getReceptes(userId);
+  }
+
+    @GetMapping(path= "/me/receptesAltres")
+    @JsonView(Views.Private.class)
+    public Collection<Recepta> listAllReceptes(HttpSession session) {
+        Long userId = getLoggedUser(session);
+        Collection<Recepta> totes = receptaRepository.findAll();
+        Collection<Recepta> altresReceptes = new ArrayList<>();
+        for (Recepta i : totes)
+        {
+            if (i.getUsuari() == null || i.getUsuari().getId() != userId) altresReceptes.add(i);
+        }
+
+        return altresReceptes;
+    }
+
+    private static class LoginUser {
     @NotNull
     public String username;
     @NotNull
