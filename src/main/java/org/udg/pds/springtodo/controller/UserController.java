@@ -81,7 +81,7 @@ public class UserController extends BaseController {
   public String register(HttpSession session, @Valid  @RequestBody RegisterUser ru) {
 
     checkNotLoggedIn(session);
-    userService.register(ru.username, ru.email, ru.password);
+    userService.register(ru.username, ru.email, ru.password, ru.ubicacio);
     return BaseController.OK_MESSAGE;
 
   }
@@ -106,7 +106,7 @@ public class UserController extends BaseController {
   public IdObject addRecepta(HttpSession session, @Valid @RequestBody ReceptaController.R_recepta recepta) {
       Long userId = getLoggedUser(session);
 
-      return receptaService.addRecepta(recepta.nom, userId, recepta.descripcio);
+      return receptaService.addRecepta(recepta.nom, userId, recepta.descripcio, recepta.categories);
   }
 
   @GetMapping(path= "/me/receptesPujades")
@@ -145,6 +145,8 @@ public class UserController extends BaseController {
     public String email;
     @NotNull
     public String password;
+
+    public String ubicacio;
   }
 
 }

@@ -21,10 +21,11 @@ public class User extends BaseEntity implements Serializable {
   public User() {
   }
 
-  public User(String username, String email, String password) {
+  public User(String username, String email, String password, String ubicacio) {
     this.username = username;
     this.email = email;
     this.password = password;
+    this.ubicacio = ubicacio;
     this.tasks = new ArrayList<>();
     this.receptes = new ArrayList<>();
   }
@@ -39,7 +40,10 @@ public class User extends BaseEntity implements Serializable {
   @NotNull
   private String password;
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+  @NotNull
+  private String ubicacio;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
   private Collection<Task> tasks;
 
   @OneToMany

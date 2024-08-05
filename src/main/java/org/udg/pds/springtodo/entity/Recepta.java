@@ -32,6 +32,10 @@ public class Recepta implements Serializable {
         this.usuari = usuari;
     }
 
+    public void setCategories(Collection<Categoria> cats){
+        this.categories = cats;
+    }
+
     @ManyToOne(fetch = FetchType.EAGER)
     private User usuari;
 
@@ -56,6 +60,7 @@ public class Recepta implements Serializable {
         return descripcio;
     }
 
+    @JsonView(Views.Public.class)
     public Collection<Categoria> getCategories() {
         return categories;
     }

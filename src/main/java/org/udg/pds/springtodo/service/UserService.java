@@ -31,7 +31,7 @@ public class UserService {
             throw new ServiceException("Password does not match");
     }
 
-    public User register(String username, String email, String password) {
+    public User register(String username, String email, String password, String ubicacio) {
 
         List<User> uEmail = userRepository.findByEmail(email);
         if (uEmail.size() > 0)
@@ -42,7 +42,7 @@ public class UserService {
         if (uUsername.size() > 0)
             throw new ServiceException("Username already exists");
 
-        User nu = new User(username, email, password);
+        User nu = new User(username, email, password, ubicacio);
         userRepository.save(nu);
         return nu;
     }

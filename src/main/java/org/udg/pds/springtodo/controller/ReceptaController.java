@@ -6,11 +6,14 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.udg.pds.springtodo.entity.Categoria;
 import org.udg.pds.springtodo.entity.IdObject;
 import org.udg.pds.springtodo.entity.Recepta;
 import org.udg.pds.springtodo.entity.Views;
+import org.udg.pds.springtodo.service.CategoriaService;
 import org.udg.pds.springtodo.service.ReceptaService;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -44,6 +47,9 @@ public class ReceptaController extends BaseController{
 
         @NotNull
         public String descripcio;
+
+        @NotNull
+        public Collection<Categoria> categories = new ArrayList<Categoria>();
 
     }
     /*
