@@ -106,6 +106,7 @@ public class UserController extends BaseController {
   public IdObject addRecepta(HttpSession session, @Valid @RequestBody ReceptaController.R_recepta recepta) {
       Long userId = getLoggedUser(session);
 
+
       return receptaService.addRecepta(recepta.nom, userId, recepta.descripcio, recepta.categories);
   }
 

@@ -49,7 +49,7 @@ public class ReceptaController extends BaseController{
         public String descripcio;
 
         @NotNull
-        public Collection<Categoria> categories = new ArrayList<Categoria>();
+        public Collection<String> categories = new ArrayList<String>();
 
     }
     /*

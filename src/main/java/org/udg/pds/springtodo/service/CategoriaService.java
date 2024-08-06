@@ -50,4 +50,12 @@ public class CategoriaService {
         if(!cat.isPresent()) throw new ServiceException("La categoria no existeix");
         else return cat.get();
     }
+
+    public Categoria getCategoriaByNom(String nom){
+        Optional<Categoria> cat = categoriaRepository.findByNom(nom);
+        if(!cat.isPresent()){
+            throw new ServiceException("La categoria no existeix");
+        }
+        else return cat.get();
+    }
 }

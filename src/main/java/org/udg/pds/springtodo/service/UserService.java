@@ -66,4 +66,8 @@ public class UserService {
         User u = this.getUser(userId);
         userRepository.delete(u);
     }
+
+    public UserRepository crud(){
+        return userRepository;
+    }
 }

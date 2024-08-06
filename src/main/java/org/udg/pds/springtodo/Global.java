@@ -116,23 +116,24 @@ public class Global {
             Categoria catItalia= categoriaService.addCategoria("Italia");
 
 
-            Collection<Categoria> cats = new ArrayList<Categoria>();
-            cats.add(catCarn);
+            Collection<String> cats = new ArrayList<String>();
+            cats.add("Carn");
 
             receptaService.addRecepta("Pollastre", user1.getId(), "arrebossat, bonissim", cats);
             receptaService.addRecepta("Pollastre", user1.getId(), "a la brasa, amb patates", cats);
+
             cats.clear();
-            cats.add(catItalia);
+            cats.add("Italia");
             receptaService.addRecepta("Pizza", user2.getId(), "quatre formatges", cats);
-            cats.add(catVeg);
+            cats.add("Veggie");
             receptaService.addRecepta("Espaguetis", user3.getId(), "a la carbonara", cats);
 
             cats.clear();
-            cats.add(catOrient);
+            cats.add("Oriental");
             receptaService.addRecepta("Gyozas", user2.getId(), "amb carn i verdures", cats);
 
             cats.clear();
-            cats.add(catVeg);
+            cats.add("Veggie");
             receptaService.addRecepta("Alberginies", user3.getId(), "farcides de bexamel", cats);
 
 

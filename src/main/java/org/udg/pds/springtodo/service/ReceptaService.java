@@ -25,6 +25,9 @@ public class ReceptaService{
     UserService userService;
 
     @Autowired
+    CategoriaService categoriaService;
+
+    @Autowired
     CategoriaRepository categoriaRepository;
 
     public ReceptaRepository crud() {
@@ -32,7 +35,7 @@ public class ReceptaService{
     }
 
     @Transactional
-    public IdObject addRecepta(String nom, Long userId, String descripcio, Collection<Categoria> cats) {
+    public IdObject addRecepta(String nom, Long userId, String descripcio, Collection<String> cats) {
         try {
             User user = userService.getUser(userId);
 
@@ -43,17 +46,14 @@ public class ReceptaService{
             user.addRecepta(recepta);
 
             Collection<Categoria> categoriesAux = new ArrayList<>();
-            for (Categoria categoria : cats) {
-                Categoria existingCategory = categoriaRepository.findById(categoria.getId()).orElseThrow(
-                    () -> new IllegalArgumentException("Categoria no no trobada amb id: " + categoria.getId())
-                );
+            for (String categoriaNom : cats) {
+                Categoria existingCategory = categoriaService.getCategoriaByNom(categoriaNom);
                 categoriesAux.add(existingCategory);
             }
             recepta.setCategories(categoriesAux);
 
-            recepta.setCategories(cats);
-
             receptaRepository.save(recepta);
+            userService.crud().save(user);
             return new IdObject(recepta.getId());
         } catch (Exception ex) {
             throw new ServiceException(ex.getMessage());
