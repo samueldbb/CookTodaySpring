@@ -81,7 +81,7 @@ public class UserController extends BaseController {
   public String register(HttpSession session, @Valid  @RequestBody RegisterUser ru) {
 
     checkNotLoggedIn(session);
-    userService.register(ru.username, ru.email, ru.password, ru.ubicacio);
+    userService.register(ru.username, ru.email, ru.password, ru.descripcio);
     return BaseController.OK_MESSAGE;
 
   }
@@ -119,7 +119,7 @@ public class UserController extends BaseController {
   }
 
     @GetMapping(path= "/me/receptesAltres")
-    @JsonView(Views.Private.class)
+    @JsonView(Views.Complete.class)
     public Collection<Recepta> listAllReceptes(HttpSession session) {
         Long userId = getLoggedUser(session);
         Collection<Recepta> totes = receptaRepository.findAll();
@@ -130,6 +130,13 @@ public class UserController extends BaseController {
         }
 
         return altresReceptes;
+    }
+
+    @PutMapping(path = "/me")
+    public User update(HttpSession httpSession, @RequestBody EditUser editUser){
+      Long userId = getLoggedUser(httpSession);
+
+      return userService.updateUser(userId, editUser.username, editUser.email, editUser.descripcio);
     }
 
     private static class LoginUser {
@@ -147,7 +154,16 @@ public class UserController extends BaseController {
     @NotNull
     public String password;
 
-    public String ubicacio;
+    public String descripcio;
   }
+
+    private static class EditUser {
+        @NotNull
+        public String username;
+        @NotNull
+        public String email;
+
+        public String descripcio;
+    }
 
 }

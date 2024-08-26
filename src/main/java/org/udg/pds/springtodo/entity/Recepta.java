@@ -1,12 +1,15 @@
 package org.udg.pds.springtodo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 import java.io.Serializable;
 import java.util.Collection;
 @Entity
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Recepta.class)
 public class Recepta implements Serializable {
     public Recepta(){
 
@@ -42,6 +45,7 @@ public class Recepta implements Serializable {
     @ManyToMany
     private Collection<Ingredient> ingredients;
 
+    @JsonView(Views.Complete.class)
     public Long getId() {
         return id;
     }

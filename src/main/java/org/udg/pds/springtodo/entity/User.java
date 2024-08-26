@@ -1,7 +1,9 @@
 package org.udg.pds.springtodo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
@@ -11,6 +13,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity(name = "users")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = User.class)
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"email", "username"}))
 public class User extends BaseEntity implements Serializable {
   /**
@@ -21,11 +24,11 @@ public class User extends BaseEntity implements Serializable {
   public User() {
   }
 
-  public User(String username, String email, String password, String ubicacio) {
+  public User(String username, String email, String password, String descripcio) {
     this.username = username;
     this.email = email;
     this.password = password;
-    this.ubicacio = ubicacio;
+    this.descripcio = descripcio;
     this.tasks = new ArrayList<>();
     this.receptes = new ArrayList<>();
   }
@@ -34,14 +37,14 @@ public class User extends BaseEntity implements Serializable {
   @NotNull
   private String username;
 
-  @NotNull
+    @NotNull
   private String email;
 
   @NotNull
   private String password;
 
   @NotNull
-  private String ubicacio;
+  private String descripcio;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
   private Collection<Task> tasks;
@@ -49,7 +52,19 @@ public class User extends BaseEntity implements Serializable {
   @OneToMany
   private Collection<Recepta> receptes;
 
-  @JsonView(Views.Complete.class)
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setDescripcio(String descripcio) {
+        this.descripcio = descripcio;
+    }
+
+  @JsonIgnore
   public Collection<Recepta> getReceptes() {
       return receptes;
   }
@@ -68,6 +83,11 @@ public class User extends BaseEntity implements Serializable {
   public String getUsername() {
     return username;
   }
+
+  @JsonView(Views.Public.class)
+  public String getDescripcio() {
+        return descripcio;
+    }
 
   @JsonIgnore
   public String getPassword() {

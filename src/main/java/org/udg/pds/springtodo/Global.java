@@ -104,11 +104,15 @@ public class Global {
         if (activeProfile.equals("dev")) {
             logger.info("Starting populating database ...");
 
-            User user = userService.register("usuari", "usuari@hotmail.com", "123456", "Blanes");
-            userService.register("user", "user@hotmail.com", "0000", "Blanes");
-            User user1 = userService.register("Sam", "sam@hotmail.com", "123456" , "Blanes");
-            User user2 = userService.register("Arnau", "arnau@hotmail.com", "123456", "Blanes");
-            User user3 = userService.register("Vane", "vane@hotmail.com", "123456", "Blanes");
+            User user = userService.register("usuari", "usuari@hotmail.com", "123456",
+                "Soc l'usuari principal, m'agrada cuinar receptes de tot tipus: pizzes, pasta, menjar oriental, etc. Soc un expert");
+            userService.register("user", "user@hotmail.com", "0000", "Especialitats: Postres i gelats");
+            User user1 = userService.register("Sam", "sam@hotmail.com", "123456" ,
+                "Expert en cuina tradicional espanyola. La paella es la meva especialitat");
+            User user2 = userService.register("Arnau", "arnau@hotmail.com", "123456",
+                "Acabo de començar en aixo de la cuina");
+            User user3 = userService.register("Vane", "vane@hotmail.com", "123456",
+                "Experta en cuinars vegetarians, faig els millors");
 
             Categoria catVeg= categoriaService.addCategoria("Veggie");
             Categoria catCarn= categoriaService.addCategoria("Carn");
