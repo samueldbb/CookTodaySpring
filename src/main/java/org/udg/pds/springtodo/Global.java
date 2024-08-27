@@ -1,24 +1,35 @@
 package org.udg.pds.springtodo;
 
 import io.minio.MinioClient;
+import io.minio.PutObjectArgs;
 import jakarta.annotation.PostConstruct;
 import lombok.Getter;
+import lombok.SneakyThrows;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.udg.pds.springtodo.configuration.exceptions.ControllerException;
 import org.udg.pds.springtodo.entity.Categoria;
 import org.udg.pds.springtodo.entity.IdObject;
 import org.udg.pds.springtodo.entity.Tag;
 import org.udg.pds.springtodo.entity.User;
 import org.udg.pds.springtodo.service.*;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.UUID;
 
 @Service
 public class Global {
@@ -99,6 +110,7 @@ public class Global {
         initData();
     }
 
+    @SneakyThrows
     private void initData() {
 
         if (activeProfile.equals("dev")) {
@@ -123,22 +135,48 @@ public class Global {
             Collection<String> cats = new ArrayList<String>();
             cats.add("Carn");
 
-            receptaService.addRecepta("Pollastre", user1.getId(), "arrebossat, bonissim", cats);
-            receptaService.addRecepta("Pollastre", user1.getId(), "a la brasa, amb patates", cats);
+            File file = new File("src/main/resources/images/bistec.jpg");
+            FileInputStream input = new FileInputStream(file);
+            MultipartFile multipartFile = new MockMultipartFile("file", file.getName(), "text/plain", IOUtils.toByteArray(input));
+            String path = upload(multipartFile);
+            receptaService.addRecepta("Bistec amb patates", user1.getId(), "espectacular", cats, path);
+
+            file = new File("src/main/resources/images/pollobrasa.jpg");
+            input = new FileInputStream(file);
+            multipartFile = new MockMultipartFile("file", file.getName(), "text/plain", IOUtils.toByteArray(input));
+            path = upload(multipartFile);
+            receptaService.addRecepta("Pollastre", user1.getId(), "a la brasa, amb patates", cats, path);
 
             cats.clear();
             cats.add("Italia");
-            receptaService.addRecepta("Pizza", user2.getId(), "quatre formatges", cats);
+            file = new File("src/main/resources/images/pizza.jpg");
+            input = new FileInputStream(file);
+            multipartFile = new MockMultipartFile("file", file.getName(), "text/plain", IOUtils.toByteArray(input));
+            path = upload(multipartFile);
+            receptaService.addRecepta("Pizza", user2.getId(), "quatre formatges", cats, path);
+
             cats.add("Veggie");
-            receptaService.addRecepta("Espaguetis", user3.getId(), "a la carbonara", cats);
+            file = new File("src/main/resources/images/carbonara.jpg");
+            input = new FileInputStream(file);
+            multipartFile = new MockMultipartFile("file", file.getName(), "text/plain", IOUtils.toByteArray(input));
+            path = upload(multipartFile);
+            receptaService.addRecepta("Espaguetis a la carbonara veggies", user3.getId(), "Una versió de espaguetis a la carbonara pero vegetarians", cats, path);
 
             cats.clear();
             cats.add("Oriental");
-            receptaService.addRecepta("Gyozas", user2.getId(), "amb carn i verdures", cats);
+            file = new File("src/main/resources/images/gyozas.jpg");
+            input = new FileInputStream(file);
+            multipartFile = new MockMultipartFile("file", file.getName(), "text/plain", IOUtils.toByteArray(input));
+            path = upload(multipartFile);
+            receptaService.addRecepta("Gyozas", user2.getId(), "amb carn i verdures", cats, path);
 
             cats.clear();
             cats.add("Veggie");
-            receptaService.addRecepta("Alberginies", user3.getId(), "farcides de bexamel", cats);
+            file = new File("src/main/resources/images/berenjenas.jpg");
+            input = new FileInputStream(file);
+            multipartFile = new MockMultipartFile("file", file.getName(), "text/plain", IOUtils.toByteArray(input));
+            path = upload(multipartFile);
+            receptaService.addRecepta("Alberginies", user3.getId(), "farcides de verdures amb bexamel", cats, path);
 
 
 
@@ -149,5 +187,32 @@ public class Global {
 
     public String getBaseURL() {
         return BASE_URL;
+    }
+
+    public String upload(@RequestParam("file") MultipartFile file) {
+
+        MinioClient minioClient = getMinioClient();
+        if (minioClient == null)
+            throw new ControllerException("Minio client not configured");
+
+        try {
+            // Handle the body of that part with an InputStream
+            InputStream istream = file.getInputStream();
+            String contentType = file.getContentType();
+            UUID imgName = UUID.randomUUID();
+
+            String objectName = imgName + "." + FilenameUtils.getExtension(file.getOriginalFilename());
+            // Upload the file to the bucket with putObject
+            minioClient.putObject(
+                PutObjectArgs.builder()
+                    .bucket(getMinioBucket())
+                    .object(objectName)
+                    .stream(istream, -1, 10485760)
+                    .build());
+
+            return String.format("%s", "http://localhost:8080/images/" + objectName);
+        } catch (Exception e) {
+            throw new ControllerException("Error saving file: " + e.getMessage());
+        }
     }
 }

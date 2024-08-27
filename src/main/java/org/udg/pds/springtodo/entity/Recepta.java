@@ -14,9 +14,10 @@ public class Recepta implements Serializable {
     public Recepta(){
 
     }
-    public Recepta(String nom, String descripcio) {
+    public Recepta(String nom, String descripcio, String imageUrl) {
         this.nom = nom;
         this.descripcio = descripcio;
+        this.imageUrl = imageUrl;
     }
 
     @Id
@@ -27,6 +28,8 @@ public class Recepta implements Serializable {
     private String nom;
 
     private String descripcio;
+
+    private String imageUrl;
 
     @ManyToMany(fetch = FetchType.LAZY)
     private Collection<Categoria> categories;
@@ -62,6 +65,11 @@ public class Recepta implements Serializable {
     @JsonView(Views.Public.class)
     public String getDescripcio() {
         return descripcio;
+    }
+
+    @JsonView(Views.Public.class)
+    public String getImageUrl() {
+        return imageUrl;
     }
 
     @JsonView(Views.Public.class)

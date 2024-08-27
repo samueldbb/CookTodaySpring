@@ -107,7 +107,7 @@ public class UserController extends BaseController {
       Long userId = getLoggedUser(session);
 
 
-      return receptaService.addRecepta(recepta.nom, userId, recepta.descripcio, recepta.categories);
+      return receptaService.addRecepta(recepta.nom, userId, recepta.descripcio, recepta.categories, recepta.imageUrl);
   }
 
   @GetMapping(path= "/me/receptesPujades")

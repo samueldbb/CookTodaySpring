@@ -35,11 +35,11 @@ public class ReceptaService{
     }
 
     @Transactional
-    public IdObject addRecepta(String nom, Long userId, String descripcio, Collection<String> cats) {
+    public IdObject addRecepta(String nom, Long userId, String descripcio, Collection<String> cats, String imageUrl) {
         try {
             User user = userService.getUser(userId);
 
-            Recepta recepta = new Recepta(nom, descripcio);
+            Recepta recepta = new Recepta(nom, descripcio, imageUrl);
 
             recepta.setUsuari(user);
 
@@ -72,24 +72,5 @@ public class ReceptaService{
         return p.get();
     }
 
-    @Transactional
-    public IdObject addTask(String text, Long userId, String nom, String descripcio) {
-        try {
-            User user = userService.getUser(userId);
-
-            Recepta recepta = new Recepta(nom, descripcio);
-
-            recepta.setUsuari(user);
-
-            user.addRecepta(recepta);
-
-            receptaRepository.save(recepta);                              //error??
-            return new IdObject(recepta.getId());
-        } catch (Exception ex) {
-            // Very important: if you want that an exception reaches the EJB caller, you have to throw an ServiceException
-            // We catch the normal exception and then transform it in a ServiceException
-            throw new ServiceException(ex.getMessage());
-        }
-    }
 
 }
