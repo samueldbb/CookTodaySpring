@@ -27,8 +27,7 @@ public class ImageController extends BaseController {
     Global global;
 
     @PostMapping
-    public String upload(HttpSession session,
-                         @RequestParam("file") MultipartFile file) {
+    public String upload(@RequestParam("file") MultipartFile file) {
 
         MinioClient minioClient = global.getMinioClient();
         if (minioClient == null)

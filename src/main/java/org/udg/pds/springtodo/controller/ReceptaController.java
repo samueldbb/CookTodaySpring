@@ -51,6 +51,9 @@ public class ReceptaController extends BaseController{
         @NotNull
         public Collection<String> categories = new ArrayList<String>();
 
+        @NotNull
+        public String imageUrl;
+
     }
     /*
     @GetMapping(path = "/{id}")
