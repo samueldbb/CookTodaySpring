@@ -53,14 +53,6 @@ public class Global {
     CategoriaService categoriaService;
 
     @Autowired
-    private
-    TaskService taskService;
-
-    @Autowired
-    private
-    TagService tagService;
-
-    @Autowired
     private Environment environment;
 
     @Value("${spring.profiles.active}")
