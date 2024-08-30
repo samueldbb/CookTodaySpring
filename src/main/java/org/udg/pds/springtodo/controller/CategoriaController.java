@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.udg.pds.springtodo.entity.Categoria;
+import org.udg.pds.springtodo.entity.Recepta;
 import org.udg.pds.springtodo.service.CategoriaService;
 import org.udg.pds.springtodo.service.ReceptaService;
 
@@ -46,6 +47,20 @@ public class CategoriaController extends BaseController{
 
         categoriaService.crud().deleteById(id);
         return BaseController.OK_MESSAGE;
+    }
+
+    @GetMapping(path = "/{id}/receptes")
+    public Collection<Recepta> getCategoriaReceptes(HttpSession session,
+                                                    @PathVariable("id") Long id) {
+
+        Long userId = getLoggedUser(session);
+        if(userId==null) {
+            return producteService.getAllReceptesCategoria(id);
+        }
+        else{
+            return producteService.getReceptesCategoria(id, userId);
+        }
+
     }
 
     static class R_Categoria {

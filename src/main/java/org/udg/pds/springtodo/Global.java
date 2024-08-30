@@ -118,11 +118,13 @@ public class Global {
             User user3 = userService.register("Vane", "vane@hotmail.com", "123456",
                 "Experta en cuinars vegetarians, faig els millors");
 
-            Categoria catVeg= categoriaService.addCategoria("Veggie");
-            Categoria catCarn= categoriaService.addCategoria("Carn");
             Categoria catOrient= categoriaService.addCategoria("Oriental");
+            Categoria catVeg= categoriaService.addCategoria("Veggie");
+            Categoria catPeix= categoriaService.addCategoria("Peix");
+            Categoria catMediterrani= categoriaService.addCategoria("Mediterrani");
+            Categoria catCarn= categoriaService.addCategoria("Carn");
             Categoria catItalia= categoriaService.addCategoria("Italia");
-
+            Categoria catAltres= categoriaService.addCategoria("Altres");
 
             Collection<String> cats = new ArrayList<String>();
             cats.add("Carn");
