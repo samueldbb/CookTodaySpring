@@ -1,10 +1,13 @@
 package org.udg.pds.springtodo.service;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.udg.pds.springtodo.configuration.exceptions.ServiceException;
+import org.udg.pds.springtodo.entity.Recepta;
 import org.udg.pds.springtodo.entity.Task;
 import org.udg.pds.springtodo.entity.User;
+import org.udg.pds.springtodo.repository.ReceptaRepository;
 import org.udg.pds.springtodo.repository.UserRepository;
 
 import java.util.Collection;
@@ -16,6 +19,12 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ReceptaService receptaService;
+
+    @Autowired
+    private ReceptaRepository receptaRepository;
 
     public User matchPassword(String username, String password) {
 
@@ -80,5 +89,23 @@ public class UserService {
         userRepository.save(user);
 
         return user;
+    }
+
+    @Transactional
+    public void addReceptaPreferits(Long userId, Long receptaId){
+        User u = getUser(userId);
+        Recepta r = receptaService.getRecepta(receptaId);
+        Boolean aux = u.getReceptesPreferides().contains(r);
+        if(!aux) u.addReceptaPreferida(r);
+        userRepository.save(u);
+    }
+
+    public void removeReceptaPreferits(Long userId, Long productId)
+    {
+        User u = getUser(userId);
+        Recepta recepta = receptaRepository.findById(productId).get();
+        Boolean aux = u.getReceptesPreferides().contains(recepta);
+        if (aux) u.removeReceptaPreferida(recepta);
+        userRepository.save(u);
     }
 }

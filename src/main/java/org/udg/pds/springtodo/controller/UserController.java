@@ -139,6 +139,15 @@ public class UserController extends BaseController {
       return userService.updateUser(userId, editUser.username, editUser.email, editUser.descripcio);
     }
 
+    @PutMapping(path = "/preferits")
+    public String addRemoveProductePreferit(@Valid @RequestBody R_recepta recepta, HttpSession session) {
+        Long userId = getLoggedUser(session);
+        if (recepta.posar) userService.addReceptaPreferits(userId, recepta.id);
+        else userService.removeReceptaPreferits(userId, recepta.id);
+        return BaseController.OK_MESSAGE;
+    }
+
+
     private static class LoginUser {
     @NotNull
     public String username;
@@ -157,6 +166,14 @@ public class UserController extends BaseController {
     public String descripcio;
   }
 
+  private static class R_recepta{
+
+      @NotNull
+      public Long id;
+      @NotNull
+      public Boolean posar;
+  }
+
     private static class EditUser {
         @NotNull
         public String username;
@@ -165,5 +182,7 @@ public class UserController extends BaseController {
 
         public String descripcio;
     }
+
+
 
 }

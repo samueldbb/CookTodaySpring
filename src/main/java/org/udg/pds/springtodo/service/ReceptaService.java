@@ -71,6 +71,14 @@ public class ReceptaService{
             throw new ServiceException("L'usuari no te aquesta recepta");
         return recepta.get();
     }
+
+    public Recepta getRecepta(Long id) {
+        Optional<Recepta> recepta = receptaRepository.findById(id);
+        if (recepta.isEmpty()) throw new ServiceException("Aquesta recepta no existeix");
+        else
+            return recepta.get();
+    }
+
     public Collection<Recepta> getReceptes(Long id) {
         return userService.getUser(id).getReceptes();
     }

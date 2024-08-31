@@ -46,7 +46,10 @@ public class User extends BaseEntity implements Serializable {
   @NotNull
   private String descripcio;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+  @ManyToMany
+  private Collection<Recepta> receptesPreferides;
+
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
   private Collection<Task> tasks;
 
   @OneToMany
@@ -68,6 +71,10 @@ public class User extends BaseEntity implements Serializable {
   public Collection<Recepta> getReceptes() {
       return receptes;
   }
+  @JsonIgnore
+  public Collection<Recepta> getReceptesPreferides() {
+        return receptesPreferides;
+    }
 
   @JsonView(Views.Private.class)
   public Long getId() {
@@ -110,4 +117,11 @@ public class User extends BaseEntity implements Serializable {
   public void addRecepta(Recepta recepta) {
       receptes.add(recepta);
   }
+
+  public void addReceptaPreferida(Recepta recepta){
+        receptesPreferides.add(recepta);
+  }
+  public void removeReceptaPreferida(Recepta recepta){
+    receptesPreferides.remove(recepta);
+    }
 }

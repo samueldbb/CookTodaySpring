@@ -172,6 +172,10 @@ public class Global {
             path = upload(multipartFile);
             receptaService.addRecepta("Alberginies", user3.getId(), "farcides de verdures amb bexamel", cats, path);
 
+            Integer y = 1;
+            long x = y.longValue();
+
+            userService.addReceptaPreferits(user.getId(), x);
 
 
 
