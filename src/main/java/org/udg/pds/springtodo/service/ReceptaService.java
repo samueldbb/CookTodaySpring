@@ -1,5 +1,7 @@
 package org.udg.pds.springtodo.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +19,8 @@ import java.util.Optional;
 
 @Service
 public class ReceptaService{
+    private static final Logger logger = LoggerFactory.getLogger(ReceptaService.class);
+
     @Autowired
     protected TagService tagService;
     @Autowired
@@ -61,11 +65,11 @@ public class ReceptaService{
     }
 
     public Recepta getRecepta(Long userId, Long id) {
-        Optional<Recepta> p = receptaRepository.findById(id);             //error?
-        if (p.isEmpty()) throw new ServiceException("Recipe does not exists");
-        if (p.get().getUsuari().getId() != userId)
-            throw new ServiceException("User does not own this recipe");
-        return p.get();
+        Optional<Recepta> recepta = receptaRepository.findById(id);
+        if (recepta.isEmpty()) throw new ServiceException("Aquesta recepta no existeix");
+        if (recepta.get().getUsuari().getId() != userId)
+            throw new ServiceException("L'usuari no te aquesta recepta");
+        return recepta.get();
     }
     public Collection<Recepta> getReceptes(Long id) {
         return userService.getUser(id).getReceptes();
@@ -118,6 +122,46 @@ public class ReceptaService{
         }
 
         return llistaFiltradaperCategories;
+    }
+
+    public Collection<Recepta> getReceptesBuscador(String paraula) {
+        Collection<Recepta> totesReceptes = receptaRepository.findAll();
+
+        Collection<Recepta> llistaFiltradaperParaula = new ArrayList<>();
+        if(paraula.isEmpty()) llistaFiltradaperParaula = totesReceptes;
+        else {
+            for(Recepta r : totesReceptes){
+                if(r.getNom().contains(paraula)){
+                    llistaFiltradaperParaula.add(r);
+                }
+            }
+        }
+
+        return llistaFiltradaperParaula;
+    }
+
+    public Collection<Recepta> getReceptesBuscador(String paraula, Long idUser) {
+        Collection<Recepta> totesReceptes = receptaRepository.findAll();
+
+        Collection<Recepta> llistaFiltradaperParaula = new ArrayList<>();
+        if (paraula.isEmpty()) {
+            llistaFiltradaperParaula = totesReceptes;
+        } else {
+            for (Recepta r : totesReceptes) {
+                if (r.getNom().contains(paraula)) {
+                    llistaFiltradaperParaula.add(r);
+                }
+            }
+        }
+
+        Collection<Recepta> altresReceptes = new ArrayList<>();
+        for (Recepta i : llistaFiltradaperParaula) {
+            if (i.getUsuari() == null || !i.getUsuari().getId().equals(idUser)) {
+                altresReceptes.add(i);
+            }
+        }
+
+        return altresReceptes;
     }
 
 }

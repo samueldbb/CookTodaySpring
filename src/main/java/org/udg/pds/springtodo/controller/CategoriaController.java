@@ -19,19 +19,13 @@ public class CategoriaController extends BaseController{
     @Autowired
     CategoriaService categoriaService;
     @Autowired
-    ReceptaService producteService;
+    ReceptaService receptaService;
 
     @GetMapping(path="/{id}")
     public Categoria getCategoria(HttpSession session,
                                   @PathVariable("id") Long id) {
 
         return categoriaService.getCategoria(id);
-    }
-
-    @GetMapping
-    public Collection<Categoria> getCategories(HttpSession session) {
-
-        return categoriaService.getCategories();
     }
 
     @PostMapping(consumes = "application/json")
@@ -41,6 +35,13 @@ public class CategoriaController extends BaseController{
         return BaseController.OK_MESSAGE;
     }
 
+    @GetMapping
+    public Collection<Categoria> getCategories(HttpSession session) {
+
+        return categoriaService.getCategories();
+    }
+
+    
     @DeleteMapping(path = "/{id}")
     public String deleteCategoria(HttpSession session,
                                   @PathVariable("id") Long id) {
@@ -52,15 +53,12 @@ public class CategoriaController extends BaseController{
     @GetMapping(path = "/{id}/receptes")
     public Collection<Recepta> getCategoriaReceptes(HttpSession session,
                                                     @PathVariable("id") Long id) {
-
         Long userId = getLoggedUser(session);
-        if(userId==null) {
-            return producteService.getAllReceptesCategoria(id);
-        }
-        else{
-            return producteService.getReceptesCategoria(id, userId);
-        }
+        if(userId==null)
+            return receptaService.getAllReceptesCategoria(id);
 
+        else
+            return receptaService.getReceptesCategoria(id, userId);
     }
 
     static class R_Categoria {
