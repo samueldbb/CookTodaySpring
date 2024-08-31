@@ -130,8 +130,9 @@ public class ReceptaService{
         Collection<Recepta> llistaFiltradaperParaula = new ArrayList<>();
         if(paraula.isEmpty()) llistaFiltradaperParaula = totesReceptes;
         else {
+            String paraulaMinuscula = paraula.toLowerCase();
             for(Recepta r : totesReceptes){
-                if(r.getNom().contains(paraula)){
+                if(r.getNom().toLowerCase().contains(paraulaMinuscula)){
                     llistaFiltradaperParaula.add(r);
                 }
             }
@@ -147,8 +148,9 @@ public class ReceptaService{
         if (paraula.isEmpty()) {
             llistaFiltradaperParaula = totesReceptes;
         } else {
+            String paraulaMinuscula = paraula.toLowerCase();
             for (Recepta r : totesReceptes) {
-                if (r.getNom().contains(paraula)) {
+                if (r.getNom().toLowerCase().contains(paraulaMinuscula)) {
                     llistaFiltradaperParaula.add(r);
                 }
             }

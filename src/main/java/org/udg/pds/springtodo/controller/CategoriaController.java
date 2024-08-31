@@ -41,7 +41,7 @@ public class CategoriaController extends BaseController{
         return categoriaService.getCategories();
     }
 
-    
+
     @DeleteMapping(path = "/{id}")
     public String deleteCategoria(HttpSession session,
                                   @PathVariable("id") Long id) {
