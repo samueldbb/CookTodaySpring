@@ -133,13 +133,16 @@ public class Global {
             FileInputStream input = new FileInputStream(file);
             MultipartFile multipartFile = new MockMultipartFile("file", file.getName(), "text/plain", IOUtils.toByteArray(input));
             String path = upload(multipartFile);
-            receptaService.addRecepta("Bistec amb patates", user1.getId(), "espectacular", cats, path);
+            receptaService.addRecepta("Bistec amb patates", user1.getId(), "espectacular", cats, path,
+                "1.Tallar les patates \n 2.Cuinar el bistec", "patates, bistec, sal, oli");
+
 
             file = new File("src/main/resources/images/pollobrasa.jpg");
             input = new FileInputStream(file);
             multipartFile = new MockMultipartFile("file", file.getName(), "text/plain", IOUtils.toByteArray(input));
             path = upload(multipartFile);
-            receptaService.addRecepta("Pollastre", user1.getId(), "a la brasa, amb patates", cats, path);
+            receptaService.addRecepta("Pollastre", user1.getId(), "a la brasa, amb patates", cats, path,
+                "1.Rentar pollastre \n 2.Cuinarlo", "pollastre, patates");
 
             cats.clear();
             cats.add("Italia");
@@ -147,14 +150,18 @@ public class Global {
             input = new FileInputStream(file);
             multipartFile = new MockMultipartFile("file", file.getName(), "text/plain", IOUtils.toByteArray(input));
             path = upload(multipartFile);
-            receptaService.addRecepta("Pizza", user2.getId(), "quatre formatges", cats, path);
+            receptaService.addRecepta("Pizza", user2.getId(), "quatre formatges", cats, path,
+                "1. Tomaquet a la base \n 2. Afegir formatge \n 3. Posar al forn 210 graus durant 15 minuts",
+                "base per pizza, tomaquet, formatge");
 
             cats.add("Veggie");
             file = new File("src/main/resources/images/carbonara.jpg");
             input = new FileInputStream(file);
             multipartFile = new MockMultipartFile("file", file.getName(), "text/plain", IOUtils.toByteArray(input));
             path = upload(multipartFile);
-            receptaService.addRecepta("Espaguetis a la carbonara veggies", user3.getId(), "Una versió de espaguetis a la carbonara pero vegetarians", cats, path);
+            receptaService.addRecepta("Espaguetis a la carbonara veggies", user3.getId(),
+                "Una versió de espaguetis a la carbonara pero vegetarians", cats, path,
+                "1. Bullir espaguetis \n 2. cuinar bolets \n 3. Afegir la salsa", "espaguetis, bolets, nata");
 
             cats.clear();
             cats.add("Oriental");
@@ -162,7 +169,8 @@ public class Global {
             input = new FileInputStream(file);
             multipartFile = new MockMultipartFile("file", file.getName(), "text/plain", IOUtils.toByteArray(input));
             path = upload(multipartFile);
-            receptaService.addRecepta("Gyozas", user2.getId(), "amb carn i verdures", cats, path);
+            receptaService.addRecepta("Gyozas", user2.getId(), "amb carn i verdures", cats, path,
+                "1. omplir la pasta amb carn i verdures \n 2. Cuinar amb oli a una paella", "pasta, carn, verdures, especies");
 
             cats.clear();
             cats.add("Veggie");
@@ -170,7 +178,9 @@ public class Global {
             input = new FileInputStream(file);
             multipartFile = new MockMultipartFile("file", file.getName(), "text/plain", IOUtils.toByteArray(input));
             path = upload(multipartFile);
-            receptaService.addRecepta("Alberginies", user3.getId(), "farcides de verdures amb bexamel", cats, path);
+            receptaService.addRecepta("Alberginies", user3.getId(), "farcides de verdures amb bexamel", cats, path,
+                "1.Tallar alberginies \n 2. omplirles de verdures i bexamel \n 3. Fornejar durant 20 minuts a 180 graus",
+                "alberginies, llet, verdures");
 
 
 

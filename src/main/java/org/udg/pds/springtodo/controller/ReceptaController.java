@@ -68,6 +68,12 @@ public class ReceptaController extends BaseController{
         @NotNull
         public String imageUrl;
 
+        @NotNull
+        public String ingredients;
+
+        @NotNull
+        public String passos;
+
     }
 
 }

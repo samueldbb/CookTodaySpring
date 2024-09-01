@@ -14,10 +14,12 @@ public class Recepta implements Serializable {
     public Recepta(){
 
     }
-    public Recepta(String nom, String descripcio, String imageUrl) {
+    public Recepta(String nom, String descripcio, String imageUrl, String ingredients, String passos) {
         this.nom = nom;
         this.descripcio = descripcio;
         this.imageUrl = imageUrl;
+        this.passos = passos;
+        this.llista_ingredients = ingredients;
     }
 
     @Id
@@ -48,6 +50,10 @@ public class Recepta implements Serializable {
 
     @ManyToMany
     private Collection<Ingredient> ingredients;
+
+    private String llista_ingredients;
+
+    private String passos;
 
     @JsonView(Views.Complete.class)
     public Long getId() {

@@ -39,11 +39,12 @@ public class ReceptaService{
     }
 
     @Transactional
-    public IdObject addRecepta(String nom, Long userId, String descripcio, Collection<String> cats, String imageUrl) {
+    public IdObject addRecepta(String nom, Long userId, String descripcio, Collection<String> cats, String imageUrl,
+                               String passos, String ingredients) {
         try {
             User user = userService.getUser(userId);
 
-            Recepta recepta = new Recepta(nom, descripcio, imageUrl);
+            Recepta recepta = new Recepta(nom, descripcio, imageUrl, passos, ingredients);
 
             recepta.setUsuari(user);
 
