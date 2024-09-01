@@ -30,6 +30,13 @@ public class ReceptaController extends BaseController{
 
     @GetMapping(path = "/{id}")
     public Recepta getRecepta(HttpSession session,
+                                    @PathVariable("id") Long id) {
+        Long userId = getLoggedUser(session);
+        return receptaService.getRecepta(id);
+    }
+
+    @GetMapping(path = "/me/{id}")
+    public Recepta getReceptaUsuari(HttpSession session,
                               @PathVariable("id") Long id) {
         Long userId = getLoggedUser(session);
         return receptaService.getRecepta(userId, id);
