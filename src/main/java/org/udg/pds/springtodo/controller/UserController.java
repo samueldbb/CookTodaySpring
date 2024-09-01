@@ -96,10 +96,8 @@ public class UserController extends BaseController {
   }
 
   @GetMapping(path="/check")
-  public String checkLoggedIn(HttpSession session) {
-    getLoggedUser(session);
-
-    return BaseController.OK_MESSAGE;
+  public User checkLoggedIn(HttpSession session) {
+    return getUserProfile(session);
   }
 
   @PostMapping(path= "/me/addRecepta")
@@ -117,6 +115,24 @@ public class UserController extends BaseController {
       Long userId = getLoggedUser(session);
       return receptaService.getReceptes(userId);
   }
+
+  @GetMapping(path = "/me/preferits")
+  public Collection<Recepta> getReceptesPreferides(HttpSession session){
+      Long userId = getLoggedUser(session);
+      return userService.getReceptesPreferides(userId);
+  }
+  @PutMapping(path = "/me/preferits")
+  public String addRemoveReceptesPreferides(@Valid @RequestBody R_recepta recepta, HttpSession session){
+      Long userId = getLoggedUser(session);
+
+      if (recepta.posar)
+          userService.addReceptaPreferits(userId, recepta.id);
+      else
+          userService.removeReceptaPreferits(userId, recepta.id);
+      return BaseController.OK_MESSAGE;
+  }
+
+
 
     @GetMapping(path= "/me/receptesAltres")
     @JsonView(Views.Complete.class)
@@ -139,12 +155,21 @@ public class UserController extends BaseController {
       return userService.updateUser(userId, editUser.username, editUser.email, editUser.descripcio);
     }
 
+    private static class R_recepta {
+        @NotNull
+        public Long id;
+        @NotNull
+        public Boolean posar;
+    }
+
     private static class LoginUser {
     @NotNull
     public String username;
     @NotNull
     public String password;
   }
+
+
 
   private static class RegisterUser {
     @NotNull

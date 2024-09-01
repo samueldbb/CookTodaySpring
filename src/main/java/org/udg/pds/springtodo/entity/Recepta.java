@@ -42,7 +42,8 @@ public class Recepta implements Serializable {
         this.categories = cats;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
+    @JoinColumn(name = "usuari")
     private User usuari;
 
     @ManyToMany

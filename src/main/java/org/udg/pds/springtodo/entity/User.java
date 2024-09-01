@@ -49,8 +49,11 @@ public class User extends BaseEntity implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
   private Collection<Task> tasks;
 
-  @OneToMany
+  @OneToMany(mappedBy = "usuari")
   private Collection<Recepta> receptes;
+
+  @ManyToMany
+  private Collection<Recepta> receptesPreferides;
 
     public void setUsername(String username) {
         this.username = username;
@@ -109,5 +112,18 @@ public class User extends BaseEntity implements Serializable {
 
   public void addRecepta(Recepta recepta) {
       receptes.add(recepta);
+  }
+
+  @JsonIgnore
+  public Collection<Recepta> getReceptesPreferides(){
+        return receptesPreferides;
+  }
+
+  public void addReceptaPreferida(Recepta recepta){
+        receptesPreferides.add(recepta);
+  }
+
+  public void removeReceptaPreferida(Recepta recepta){
+        receptesPreferides.remove(recepta);
   }
 }

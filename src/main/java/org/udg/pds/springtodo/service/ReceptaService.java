@@ -3,6 +3,7 @@ package org.udg.pds.springtodo.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.udg.pds.springtodo.configuration.exceptions.ServiceException;
@@ -19,12 +20,11 @@ import java.util.Optional;
 
 @Service
 public class ReceptaService{
-    private static final Logger logger = LoggerFactory.getLogger(ReceptaService.class);
 
     @Autowired
-    protected TagService tagService;
-    @Autowired
     ReceptaRepository receptaRepository;
+
+    @Lazy
     @Autowired
     UserService userService;
 
@@ -164,6 +164,13 @@ public class ReceptaService{
         }
 
         return altresReceptes;
+    }
+
+    public Recepta getRecepta(Long id) {
+        Optional<Recepta> recepta = receptaRepository.findById(id);
+        if (recepta.isEmpty()) throw new ServiceException("Aquesta recepta no existeix");
+        else
+            return recepta.get();
     }
 
 }
