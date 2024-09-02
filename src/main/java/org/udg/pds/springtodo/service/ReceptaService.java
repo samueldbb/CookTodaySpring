@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.udg.pds.springtodo.configuration.exceptions.ControllerException;
 import org.udg.pds.springtodo.configuration.exceptions.ServiceException;
 import org.udg.pds.springtodo.entity.Categoria;
 import org.udg.pds.springtodo.entity.IdObject;
@@ -174,4 +175,20 @@ public class ReceptaService{
             return recepta.get();
     }
 
+    public Recepta updateRecepta(Long userId, Long receptaId, String nom, String descripcio, String llista_ingredients, String passos) {
+        Recepta recepta = receptaRepository.findById(receptaId).orElseThrow(() -> new ControllerException("Recepta no trobada"));
+
+        if (!recepta.getUsuari().getId().equals(userId)) {
+            throw new ControllerException("No tens permís per modificar aquesta recepta");
+        }
+
+        recepta.setNom(nom);
+        recepta.setDescripcio(descripcio);
+        recepta.setLlista_ingredients(llista_ingredients);
+        recepta.setPassos(passos);
+
+        receptaRepository.save(recepta);
+
+        return recepta;
+    }
 }

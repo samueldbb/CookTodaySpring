@@ -108,8 +108,9 @@ public class UserController extends BaseController {
       return receptaService.addRecepta(recepta.nom, userId, recepta.descripcio, recepta.categories, recepta.imageUrl, recepta.passos, recepta.ingredients);
   }
 
+
   @GetMapping(path= "/me/receptesPujades")
-  @JsonView(Views.Private.class)
+  @JsonView(Views.Complete.class)
   public Collection<Recepta> listAllMyReceptes(HttpSession session,
                                              @RequestParam(value = "from", required = false) Date from) {
       Long userId = getLoggedUser(session);

@@ -29,6 +29,18 @@ public class Recepta implements Serializable {
     @NotNull
     private String nom;
 
+    public void setDescripcio(String descripcio) {
+        this.descripcio = descripcio;
+    }
+
+    public void setLlista_ingredients(String llista_ingredients) {
+        this.llista_ingredients = llista_ingredients;
+    }
+
+    public void setPassos(String passos) {
+        this.passos = passos;
+    }
+
     private String descripcio;
 
     private String imageUrl;
@@ -98,4 +110,7 @@ public class Recepta implements Serializable {
         return usuari;
     }
 
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
 }

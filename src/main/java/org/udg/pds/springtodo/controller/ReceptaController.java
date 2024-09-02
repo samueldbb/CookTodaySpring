@@ -49,6 +49,14 @@ public class ReceptaController extends BaseController{
         return BaseController.OK_MESSAGE;
     }
 
+    @PutMapping(path = "/edit/{id}")
+    public Recepta updateRecepta(HttpSession session, @PathVariable("id") Long id,
+        @Valid @RequestBody ReceptaController.UpdateReceptaData receptaData) {
+
+        Long userId = getLoggedUser(session);
+
+        return receptaService.updateRecepta(userId, id, receptaData.nom, receptaData.descripcio, receptaData.ingredients, receptaData.passos);
+    }
     @GetMapping(path = "/conte/{paraula}")
     public Collection<Recepta> getReceptesAmbParaula(HttpSession session,
                                                            @PathVariable("paraula") String paraula) {
@@ -82,5 +90,20 @@ public class ReceptaController extends BaseController{
         public String passos;
 
     }
+
+    static class UpdateReceptaData {
+        @NotNull
+        public String nom;
+
+        @NotNull
+        public String descripcio;
+
+        @NotNull
+        public String ingredients;
+
+        @NotNull
+        public String passos;
+    }
+
 
 }
