@@ -12,7 +12,6 @@ import java.util.Collection;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Recepta.class)
 public class Recepta implements Serializable {
     public Recepta(){
-
     }
     public Recepta(String nom, String descripcio, String imageUrl, String passos, String ingredients) {
         this.nom = nom;
@@ -65,6 +64,7 @@ public class Recepta implements Serializable {
 
     private String llista_ingredients;
 
+    @Column(length = 5000)
     private String passos;
 
     @JsonView(Views.Complete.class)
